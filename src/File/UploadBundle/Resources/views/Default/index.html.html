@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="../js/dragresize.js"></script>
+<script src="../js/jquery-2.1.0.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+$('#sub').click(function() {
+$x = $("#borderbox").css('left');
+$y = $("#borderbox").css('top');
+$w = $("#borderbox").css('width');
+$h = $("#borderbox").css('height');    
+var frmdt = new FormData($('form')[0]);
+frmdt.append('x',$x);
+frmdt.append('y',$y);
+frmdt.append('w',$w);
+frmdt.append('h',$h);
+$.ajax({
+url: 'fileupload',
+type: "POST",
+data:  frmdt , 
+contentType: false,
+cache: false,
+processData:false,
+datatype:'json',
+success:function(msg)
+{
+alert(msg);
+},
+error:function()
+{
+alert("error");
+}
+});
+});
+});
+</script>
+<style type="text/css">
+#container
+{
+position: relative;
+height:300px;
+width:300px;
+background:black;
+}
+.blurimage
+{
+position: absolute;
+top:0px;
+left:0px;
+opacity:0.5;
+height:300px;
+width:300px;
+}
+.cropbox
+{
+height:100%;
+width:100%;
+overflow: hidden;
+position: absolute;
+}
+.cropimage
+{
+	height: 300px;
+	width: 300px;
+	position: absolute;
+	left:-30px;
+	top:-30px
+}
+.drsElement 
+ {
+ position: absolute;
+ border: 1px solid white;
+ }
+.drsMoveHandle {
+ background-color: #CCC;
+ border-bottom: 1px solid white;
+ cursor: move;
+}
+.dragresize {
+ position: absolute;
+ width: 5px;
+ height: 5px;
+ font-size: 1px;
+ background: #EEE;
+ border: 1px solid white;
+}
+.dragresize-tl {
+ top: -3px;
+ left: -3px;
+ cursor: nw-resize;
+}
+.dragresize-tm {
+ top: -3px;
+ left: 50%;
+ margin-left: -4px;
+ cursor: n-resize;
+}
+.dragresize-tr {
+ top: -3px;
+ right: -3px;
+ cursor: ne-resize;
+}
+
+.dragresize-ml {
+ top: 50%;
+ margin-top: -4px;
+ left: -3px;
+ cursor: w-resize;
+}
+.dragresize-mr {
+ top: 50%;
+ margin-top: -4px;
+ right: -3px;
+ cursor: e-resize;
+}
+
+.dragresize-bl {
+ bottom: -3px;
+ left: -3px;
+ cursor: sw-resize;
+}
+.dragresize-bm {
+ bottom: -3px;
+ left: 50%;
+ margin-left: -4px;
+ cursor: s-resize;
+}
+.dragresize-br {
+ bottom: -3px;
+ right: -3px;
+ cursor: se-resize;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+$('img').hide();
+$('#borderbox').hide();
+});
+var dragresize = new DragResize('dragresize',
+ { minWidth: 50, minHeight: 50, minLeft: 0, minTop: 0, maxLeft: 300, maxTop: 300 });
+dragresize.isElement = function(elm)
+{
+ if (elm.className && elm.className.indexOf('drsElement') > -1) return true;
+};
+dragresize.isHandle = function(elm)
+{
+ if (elm.className && elm.className.indexOf('drsMoveHandle') > -1) return true;
+};
+dragresize.ondragfocus = function() { };
+dragresize.ondragstart = function(isResize) { }; 
+dragresize.ondragmove = function(isResize) { 
+				$tp = $("#borderbox").css('top');
+            	$lt = $("#borderbox").css('left');
+            	$(".cropimage").css('top','-' + $tp);
+               	$(".cropimage").css('left','-' + $lt);
+};
+dragresize.ondragend = function(isResize) { };  
+dragresize.ondragblur = function() { }; 
+dragresize.apply(document);
+</script>
+<script>
+function readURL(input) {
+    if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                	$('img').show();
+                	$('#borderbox').show();
+                  $('img').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+</script>
+</head>
+<body>
+<div id="container">
+<img src="#" class="blurimage">
+<div id="borderbox" class="drsElement drsMoveHandle"
+ style="left: 30px; top: 30px; width: 150px; height: 150px;
+  text-align: center">
+<div class="cropbox">
+<img src="#" class="cropimage">
+</div>
+</div>
+</div>
+<div id="form-section">  
+ <form method="post" enctype="multipart/form-data" id="form1">
+    <p>Upload Image:<input type="file" name="image" onchange="readURL(this);" id="imageup" accept="image/*"></p>
+    <input type="button" value="Upload" id="sub">
+</form>
+</div>
+</body>
+</html>

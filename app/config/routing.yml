@@ -1,0 +1,4 @@
+file_upload:
+    resource: "@FileUploadBundle/Resources/config/routing.yml"
+    prefix:   /
+

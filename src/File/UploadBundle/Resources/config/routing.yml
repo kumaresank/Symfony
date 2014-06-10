@@ -1,0 +1,7 @@
+file_upload_homepage:
+    pattern:  /home
+    defaults: { _controller: FileUploadBundle:Default:index }
+
+file_upload_fileup:
+    pattern:  /fileupload
+    defaults: { _controller: FileUploadBundle:Default:upload }

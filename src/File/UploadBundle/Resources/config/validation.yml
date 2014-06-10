@@ -1,0 +1,9 @@
+File\UploadBundle\Entity\Fileupload:
+    properties:
+        file:
+            - File:
+                maxSize: 5120k
+                maxSizeMessage: The Image size is large
+                mimeTypes: [image/png ,image/jpeg ,image/jpg ,image/tiff ,image/gif]
+                mimeTypesMessage: Please upload Valid image
+                
